@@ -37,7 +37,7 @@ touch src/components/useState/EmojiSwitcher.jsx
 # Repeat for all component files as needed
 
 
-react-hooks-practice-aug6-2025/
+react-hooks-practice-2025/
 ├── README.md
 ├── .gitignore
 ├── package.json
