@@ -6,8 +6,9 @@ import React , {useState} from 'react'
 
 
 function QuantitySelector(){
-    const [items, setItems] = useState(0)
-    const [price, setPrice] = useState(100)
+    const [items, setItems] = useState(1) // Start at 1 to respect minimum
+    const pricePerItem = 100; // Fixed price per item
+    
     
 
     const addItems = ()=>{
@@ -15,15 +16,8 @@ function QuantitySelector(){
     }
 
     const itemsRemoved = ()=>{
-        setItems(i => i - 1)
+        setItems(i => (i > 1 ? i - 1 : 1)); // Prevent going below 1
     }
-
-    const totalPrice = ()=>{
-        setPrice(`${price * items}`)
-    }
-
-
-
 
     return(
     <div>
@@ -33,8 +27,8 @@ function QuantitySelector(){
         <p>Items Available: {items}</p>
         <button onClick={itemsRemoved}>Items Removed</button>
 
-        <p>Total Price: {price * items}</p>
-        <button onClick={totalPrice}>Total Price</button>
+        <p>Total Price: {pricePerItem * items}</p>
+        
 
     </div>
 
