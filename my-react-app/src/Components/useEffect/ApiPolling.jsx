@@ -1,79 +1,58 @@
-// ✅ 4. API Polling
+import React, { useState, useEffect } from 'react';
 
-//     Fetch random user data from https://randomuser.me/api 
-//     every 10 seconds using setInterval.
+function API_Polling() {
+  const [user, setUser] = useState(null); // Store single user object
+  const [loading, setLoading] = useState(true); // Show spinner/loading
+  const [error, setError] = useState(null); // Handle errors
 
-import React, {useState, useEffect} from 'react'
-
-
-function API_Polling(){
-    const [users, setUsers] = useState([]) // storing API data
-    const [loading, setLoading] = useState(true) //show spinner/loading
-    const [error, setError] = useState(null)  // handle errors
-
-    useEffect(()=>{
-        // async function inside useEffect
-        const fetchUsers = async() =>{
-                try{
-            const response = await fetch('https://randomuser.me/api');
-            if(!response.ok){
-                throw new error(`HTTP error ! status: ${response.status}`)
-            }
-            const data = await response.json();
-            setUsers(data)
-                }catch(error){
-                    setError(error.message)
-                }finally{
-                    setLoading(false)
-                }
+  useEffect(() => {
+    // Async function to fetch user data
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://randomuser.me/api');
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
+        const data = await response.json();
+        setUser(data.results[0]); // Store the first user from results array
+        setError(null);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchUsers(); // call the function
+    // Initial fetch
+    fetchUser();
 
-    }, []); // empty array = run only once on mount
+    // Set up polling every 10 seconds
+    const intervalId = setInterval(fetchUser, 10000);
 
+    // Cleanup interval on unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty array: set up polling once on mount
 
+  // UI conditions
+  if (loading) return <p>Loading user...</p>;
+  if (error) return <p>Error: {error}</p>;
 
-
-    // UI conditions
-    if(loading) return <p>Loading users ....</p>
-    if(error) return <p>Error: {error}</p>
-
-
-    return(
+  return (
+    <div>
+      <h2>Random User</h2>
+      {user && (
         <div>
-            <h2>User List</h2>
-            <ul>
-                {users.map(user =>{
-                    <li key={user.id}><strong>{user.name}</strong>-{user.email}</li>
-                })}
-            </ul>
+          <p>
+            <strong>
+              {user.name.title} {user.name.first} {user.name.last}
+            </strong>
+          </p>
+          <p>Email: {user.email}</p>
         </div>
-    )
-
-
-
+      )}
+    </div>
+  );
 }
 
-export default API_Polling
-
-
-// | Line                    | What's going on                    |
-// | ----------------------- | ---------------------------------- |
-// | `useEffect(...)`        | Runs once when component mounts    |
-// | `fetch()`               | Makes HTTP request to external API |
-// | `await response.json()` | Converts response to usable JSON   |
-// | `setUsers(data)`        | Stores result in component state   |
-// | `setLoading(false)`     | Signals data has finished loading  |
-// | `setError(err.message)` | Stores any error if fetch fails    |
-
-
-
-// ✅ Summary: Best Practices
-//     ✅ Always use useEffect with an empty dependency array to fetch on mount.
-//     ✅ Use async/await inside a function defined within useEffect.
-//     ✅ Handle 3 states:
-
-//         loading
-//         data (success)
-//         error
+export default API_Polling;
