@@ -6,12 +6,14 @@ import WindowResize from './Components/useEffect/WindowResize.jsx';
 import TitleUpdater from './Components/useEffect/TitleUpdater.jsx';
 import OnlineStatus from './Components/useEffect/OnlineStatus.jsx';
 import API_Polling from './Components/useEffect/ApiPolling.jsx';
+import WeatherApp from './Components/useEffect/WeatherApp.jsx';
 
 function App() {
   return(
     <>
     <EmojiSwitcher/>
     <ColorPicker/>
+    <WeatherApp/>
     <OnlineStatus/>
     <OnlineStatus/>
     <OnlineStatus/>
