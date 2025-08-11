@@ -56,3 +56,24 @@ function API_Polling(){
 }
 
 export default API_Polling
+
+
+// | Line                    | What's going on                    |
+// | ----------------------- | ---------------------------------- |
+// | `useEffect(...)`        | Runs once when component mounts    |
+// | `fetch()`               | Makes HTTP request to external API |
+// | `await response.json()` | Converts response to usable JSON   |
+// | `setUsers(data)`        | Stores result in component state   |
+// | `setLoading(false)`     | Signals data has finished loading  |
+// | `setError(err.message)` | Stores any error if fetch fails    |
+
+
+
+// ✅ Summary: Best Practices
+//     ✅ Always use useEffect with an empty dependency array to fetch on mount.
+//     ✅ Use async/await inside a function defined within useEffect.
+//     ✅ Handle 3 states:
+
+//         loading
+//         data (success)
+//         error
